@@ -1,0 +1,69 @@
+version: "3"
+services:
+        #  client:                 
+        #    build:
+        #      dockerfile: Dockerfile
+        #      context: ./client    
+        #    volumes:
+        #      - ./client/:/app      
+        #      - /app/node_modules  
+        #    networks:
+        #      - backend           
+  server:                          
+    build:
+      dockerfile: Dockerfile
+      context: ./server    
+    volumes:
+      - ./server/:/app      
+    environment:
+      - NODE_PATH=src
+      - PORT=3050
+      - DB_HOST=mongo
+      - DB=test
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379      
+    networks:
+      - backend  
+    depends_on:
+      - mongo
+      - redis 
+  redis:
+    container_name: redis
+    image: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - backend 
+    volumes:
+      - data:/data/redis   
+    ports:
+      - "6379:6379"
+    restart: always    
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - data:/data/db
+    ports:
+      - "27017:27017" 
+    networks:
+      - backend
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx 
+    ports:
+      - '5050:80' 
+    networks:
+      - backend
+    
+
+networks: 
+  backend:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local  
