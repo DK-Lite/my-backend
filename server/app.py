@@ -1,11 +1,9 @@
 import json
 from flask import Flask, request
 from flask_restful import Resource, Api
-from flask_cors import CORS
 from pymongo import MongoClient
 
 app = Flask(__name__)
-CORS(app)
 
 def change_key(dic, key, value):
     dic[key]=value

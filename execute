@@ -1,0 +1,5 @@
+docker-compose down
+source .env
+docker-compose up --build
+echo "start be"
+
