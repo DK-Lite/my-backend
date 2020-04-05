@@ -61,6 +61,16 @@ def PostAptInfoFrom():
     client.close()
     return { 'info': docs }
 
+@app.route("/data-mart/apt_trade_month_avg/apt-info", methods=['POST'])
+def PostAptInfoFrom():
+    client = MongoClient("mongo", 27017)
+    db = client.data_mart
+    collection = db.apt_trade_month_avg
+    cursor = collection.find({ '_id' : request.json })
+    docs = [ doc for idx, doc in enumerate(cursor)]
+    client.close()
+    return { 'info': docs }
+
 
 if __name__=='__main__':
     app.run(debug=True, host='0.0.0.0', port='3691')
