@@ -62,7 +62,7 @@ def PostAptInfoFrom():
     return { 'info': docs }
 
 @app.route("/data-mart/apt_trade_month_avg/apt-info", methods=['POST'])
-def PostAptInfoFrom():
+def PostAptAvgFrom():
     client = MongoClient("mongo", 27017)
     db = client.data_mart
     collection = db.apt_trade_month_avg
